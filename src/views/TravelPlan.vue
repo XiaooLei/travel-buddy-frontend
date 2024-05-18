@@ -1,6 +1,7 @@
 <template>
     <div class="header">
         <div class="left-blank"></div>
+        <!-- <div> </div> -->
         <a-input-search v-model:value="travelSetting.destination" placeholder="输入你想去的目的地"
             @search="handleSearch(destination)" />
         <div class="right-blank">
@@ -9,58 +10,48 @@
             </button>
         </div>
     </div>
-    <div class="wrap">
-        <div class="left-side-bar">
-            <a-space direction="vertical">
-                <a-space>
-                    <p>起点</p>
-                    <a-input v-model:value="travelSetting.departureArea" placeholder="输入您的出发地" style="width: 150px" />
-                </a-space>
-                <a-space>
-                    <p>预算</p>
-                    <a-input prefix="￥" suffix="RMB" v-model:value="travelSetting.budget" style="width: 150px" />
-                </a-space>
-                <a-space>
-                    <p>天数</p>
-                    <a-input-number id="inputNumber" v-model:value="travelSetting.dayCount" :min="1" :max="10"
-                        style="width: 150px" />
-                </a-space>
-                <a-space>
-                    <p>风格</p>
-                    <a-select v-model:value="travelSetting.style" show-search placeholder="旅行风格" style="width: 150px"
-                        :options="options" :filter-option="filterOption" @focus="handleFocus" @blur="handleBlur"
-                        @change="handleChange"></a-select>
-                </a-space>
-            </a-space>
+    <div class="flex flex-col search-res-container gap-y-3 mt-5">
+        <div class="text-3xl">
+            <h1>{{travelPlanTitle}}</h1>
         </div>
-        <div class="search-res-container">
-            <p style="text-align: left" v-html="renderMarkdown(travelPlanRes)"></p>
-            <div>
-                <div class="grid grid-flow-col overflow-x-auto snap-x snap-mandatory scroll-smooth transition-transform page_weatherScroller__ry586 no-scrollbar relative page_weatherGutter__25Mug">
-                </div>
+        <div class="flex justify-center">
+            <div class="w-1/2 bg-slate-100 rounded-2xl p-6">
+                <p style="text-align: left" v-html="renderMarkdown(travelPlanRes)"></p>
             </div>
         </div>
-        <div class="right-side-bar">
-            <a-space direction="vertical">
-                <div style="padding: 20px;">
-                    <h2>未来7天天气</h2>
-                    <CityWeather />
-                </div>
+    </div>
+    
+    <a-space direction="vertical" class="flex flex-col justify-center ">
+        <div style="padding: 20px;">
+            <h2>未来15天天气</h2>
+            <div class="flex justify-center">
+                <CityWeather />
+            </div>
+        </div>
+        <div class="flex justify-center ">
+            <div class="bg-white w-1/2 rounded-2xl p-3">
                 <h2>必去景点</h2>
                 <div class="overflow-y-auto" style="height: 350px;">
                     <a-table :dataSource="spotsRecommends" :columns="spotsRecommendsCols" :pagination="false" />
                 </div>
+            </div>
+        </div>
+
+        
+        <PoiCard></PoiCard>
+        <div class="flex justify-center ">
+            <div class="bg-white w-1/2 rounded-2xl p-3">
                 <h2>饮食推荐</h2>
                 <div class="overflow-y-auto" style="height: 350px;">
                     <a-table :dataSource="foodRecommentds" :columns="foodRecommendsCols" :pagination="false" />
                 </div>
-                <!-- <div>
-                    酒店推荐
-                    <a-table :dataSource="dataSource" :columns="columns" :pagination="false"/>
-                </div> -->
-            </a-space>
+            </div>
         </div>
-    </div>
+        <!-- <div>
+                酒店推荐
+                <a-table :dataSource="dataSource" :columns="columns" :pagination="false"/>
+            </div> -->
+    </a-space>
 </template>
 
 <script>
@@ -69,6 +60,7 @@ import { API_BASE_URL } from '../config.js'
 import { IconShare } from '@/icons/index'
 import { message } from 'ant-design-vue'
 import CityWeather from '@/components/CityWeather.vue'
+import PoiCard from '@/components/PoiCard.vue';
 const md = new MarkdownIt({
     html: true,
     linkify: true,
@@ -142,6 +134,7 @@ export default {
     components: {
         IconShare,
         CityWeather,
+        PoiCard,
     },
     data() {
         return {
@@ -152,6 +145,7 @@ export default {
                 budget: 0,
                 style: "",
             },
+            travelPlanTitle: "",
             travelPlanRes: "",
             printing: false,
             options: [{
@@ -338,7 +332,7 @@ export default {
 
 }
 
-.wrap {
+.travel-plan-wrap {
     display: grid;
     grid-template-columns: 6fr 12fr 7fr;
     min-height: 10px;

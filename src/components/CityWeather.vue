@@ -1,6 +1,6 @@
 <template>
-  <div class="relative grid grid-flow-col justify-start overflow-x-auto rounded-xl" style="width: 350px;">
-      <div v-for="forecast in futureForcast.slice(0, 7)" :key="forecast.ymd"
+  <div class="relative grid grid-flow-col justify-start overflow-x-auto rounded-xl" style="width: 700px;">
+      <div v-for="forecast in futureForcast.slice(0, 15)" :key="forecast.ymd"
         class="relative weather-card rounded-xl h-40 w-28 border border-cyan-400 bg-teal-50	overflow-x-auto p-3">
         <div class="flex flex-col justify-center gap-1">
           {{forecast.ymd}}

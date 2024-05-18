@@ -1,33 +1,51 @@
 <template>
-    <div class="wrap">
-        <div class="left-side-bar">
-            <a-space direction="vertical">
-            </a-space>
+    <div class="share-page-wrap">
+        <div class="flex flex-col search-res-container gap-y-3 mt-5">
+            <div class="text-3xl">
+                <h1>成都-熊猫之旅</h1>
+            </div>
+            <div class="flex justify-center">
+                <div class="w-1/2 bg-slate-100 rounded-2xl p-6">
+                    <p style="text-align: left" v-html="renderMarkdown(travelPlanRes)"></p>
+                </div>
+            </div>
         </div>
-        <div class="search-res-container">
-            <p style="text-align: left" v-html="renderMarkdown(travelPlanRes)"></p>
-        </div>
-        
-        <div class="right-side-bar">
-            <a-space direction="vertical">
-                <div style="padding: 20px;">
-                    <h2>未来7天天气</h2>
+
+        <a-space direction="vertical" class="flex flex-col justify-center ">
+            <div style="padding: 20px;">
+                <h2>未来15天天气</h2>
+                <div class="flex justify-center">
                     <CityWeather />
                 </div>
-                <h2>必去景点</h2>
-                <div class="overflow-y-auto" style="height: 350px;">
-                    <a-table :dataSource="spotsRecommends" :columns="spotsRecommendsCols" :pagination="false" />
+            </div>
+            <div class="flex justify-center ">
+                <div class="bg-white w-1/2 rounded-2xl p-3">
+                    <h2>必去景点</h2>
+                    <div class="overflow-y-auto" style="height: 350px;">
+                        <a-table :dataSource="spotsRecommends" :columns="spotsRecommendsCols" :pagination="false" />
+                    </div>
                 </div>
-                <h2>饮食推荐</h2>
-                <div class="overflow-y-auto" style="height: 350px;">
-                    <a-table :dataSource="foodRecommentds" :columns="foodRecommendsCols" :pagination="false" />
+            </div>
+            <div class="flex justify-center">
+                <div class="relative grid grid-flow-col justify-start overflow-x-auto rounded-xl gap-3" style="width: 700px;">
+                    <div v-for="i in 5" :key="i">
+                        <PoiCard :poiName="'成都111'"/>
+                    </div>
                 </div>
-                <!-- <div>
+            </div>
+            <div class="flex justify-center ">
+                <div class="bg-white w-1/2 rounded-2xl p-3">
+                    <h2>饮食推荐</h2>
+                    <div class="overflow-y-auto" style="height: 350px;">
+                        <a-table :dataSource="foodRecommentds" :columns="foodRecommendsCols" :pagination="false" />
+                    </div>
+                </div>
+            </div>
+            <!-- <div>
                     酒店推荐
                     <a-table :dataSource="dataSource" :columns="columns" :pagination="false"/>
                 </div> -->
-            </a-space>
-        </div>
+        </a-space>
     </div>
 </template>
 
@@ -37,6 +55,7 @@
 import { API_BASE_URL } from '../config.js'
 import MarkdownIt from 'markdown-it';
 import CityWeather from '@/components/CityWeather.vue'
+import PoiCard from '@/components/PoiCard.vue';
 const md = new MarkdownIt({
     html: true,
     linkify: true,
@@ -50,6 +69,7 @@ export default {
     },
     components: {
         CityWeather,
+        PoiCard,
     },
     data() {
         return {
@@ -126,10 +146,9 @@ export default {
 </script>
 
 <style>
-.wrap {
-    display: grid;
-    grid-template-columns: 1fr 3fr 3fr;
+.share-page-wrap {
+    display: flex;
+    flex-direction: column;
+    background-image: url('https://images.ixigo.com/node_image/f_auto/imageURL?url=https%3A%2F%2Fplan-cf.ixigo.com%2Fimages%2Fchengdu');
 }
-
-
 </style>
