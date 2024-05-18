@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import SharePage from '@/components/SharePage.vue'; // 确保路径正确，通常需要 .vue 后缀
-import HomePage from '@/components/HomePage.vue';
+import SharePage from '@/views/SharePage.vue'; // 确保路径正确，通常需要 .vue 后缀
+import TravelPlan from '@/views/TravelPlan.vue';
+import HomePage from '@/views/HomePage.vue';
 
 // 定义路由
 const routes = [
@@ -11,9 +12,13 @@ const routes = [
     component: SharePage
   },
   {
-    path: '/', // 动态路由的参数使用冒号命名
-    component: HomePage
+    path: '/travelPlan', // 动态路由的参数使用冒号命名
+    component: TravelPlan
   },
+  {
+    path: '/',
+    component: HomePage
+  }
   // ... 可以添加更多的路由
 ];
 

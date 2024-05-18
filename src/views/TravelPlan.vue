@@ -38,6 +38,9 @@
         </div>
         <div class="right-side-bar">
             <a-space direction="vertical">
+                <div style="padding: 20px;">
+                    <CityWeather/>
+                </div>
                 <div>
                     <h2>必去景点</h2>
                     <a-table :dataSource="spotsRecommends" :columns="spotsRecommendsCols" :pagination="false" />
@@ -58,8 +61,9 @@
 <script>
 import MarkdownIt from 'markdown-it';
 import { API_BASE_URL } from '../config.js'
-import { IconShare } from './icons/index'
+import { IconShare } from '@/icons/index'
 import { message } from 'ant-design-vue'
+import CityWeather from '@/components/CityWeather.vue'
 const md = new MarkdownIt({
     html: true,
     linkify: true,
@@ -130,7 +134,10 @@ export default {
     props: {
         msg: String
     },
-    components: { IconShare },
+    components: { 
+        IconShare,
+        CityWeather,
+    },
     data() {
         return {
             travelSetting: {
@@ -202,7 +209,8 @@ export default {
                     key: '推荐指数',
                 }
             ],
-            shareKey: 1
+            shareKey: 1,
+            travelGoal: "",
         }
     },
     methods: {
@@ -276,6 +284,10 @@ export default {
             console.error('无法复制当前页面URL到剪贴板', err)
         }
         }
+    },
+    created() {
+        const planGoal = this.$route.query.planGoal;
+        console.log("旅行目标：", planGoal)
     }
 }
 </script>
@@ -322,14 +334,8 @@ export default {
 .wrap {
     display: grid;
     grid-template-columns: 6fr 12fr 7fr;
-    height: calc(100% - 100px);
-    min-height: 1000px;
-
+    min-height: 10px;
     .left-side-bar {
-        min-height: 100%;
-        height: 100%;
-        width: 100%;
-        margin-top: 100px;
         margin-right: 20px;
     }
 
@@ -338,6 +344,7 @@ export default {
     }
 
     .search-res-container {
+        min-height: 100%;
         padding: 10px;
     }
 }

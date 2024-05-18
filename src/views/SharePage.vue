@@ -1,36 +1,7 @@
 <template>
-    <!-- <div class="header">
-        <div class="left-blank"></div>
-        <a-input-search v-model:value="travelSetting.destination" placeholder="输入你想去的目的地"
-            @search="handleSearch(destination)" />
-        <div class="right-blank">
-            <button class="share" @click="copyCurrentUrlToClipboard">
-                <IconShare />分享
-            </button>
-        </div>
-    </div> -->
     <div class="wrap">
         <div class="left-side-bar">
             <a-space direction="vertical">
-                <!-- <a-space>
-                    <p>起点</p>
-                    <a-input v-model:value="travelSetting.departureArea" placeholder="输入您的出发地" style="width: 150px" />
-                </a-space>
-                <a-space>
-                    <p>预算</p>
-                    <a-input prefix="￥" suffix="RMB" v-model:value="travelSetting.budget" style="width: 150px" />
-                </a-space>
-                <a-space>
-                    <p>天数</p>
-                    <a-input-number id="inputNumber" v-model:value="travelSetting.dayCount" :min="1" :max="10"
-                        style="width: 150px" />
-                </a-space>
-                <a-space>
-                    <p>风格</p>
-                    <a-select v-model:value="travelSetting.style" show-search placeholder="旅行风格" style="width: 150px"
-                        :options="options" :filter-option="filterOption" @focus="handleFocus" @blur="handleBlur"
-                        @change="handleChange"></a-select>
-                </a-space> -->
             </a-space>
         </div>
         <div class="search-res-container">
@@ -145,3 +116,12 @@ export default {
 }
 
 </script>
+
+<style>
+.wrap {
+    display: grid;
+    grid-template-columns: 1fr 3fr 3fr;
+}
+
+
+</style>
