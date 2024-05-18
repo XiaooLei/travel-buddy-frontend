@@ -7,14 +7,19 @@
         <div class="search-res-container">
             <p style="text-align: left" v-html="renderMarkdown(travelPlanRes)"></p>
         </div>
+        
         <div class="right-side-bar">
             <a-space direction="vertical">
-                <div>
-                    <h2>必去景点</h2>
+                <div style="padding: 20px;">
+                    <h2>未来7天天气</h2>
+                    <CityWeather />
+                </div>
+                <h2>必去景点</h2>
+                <div class="overflow-y-auto" style="height: 350px;">
                     <a-table :dataSource="spotsRecommends" :columns="spotsRecommendsCols" :pagination="false" />
                 </div>
-                <div>
-                    <h2>饮食推荐</h2>
+                <h2>饮食推荐</h2>
+                <div class="overflow-y-auto" style="height: 350px;">
                     <a-table :dataSource="foodRecommentds" :columns="foodRecommendsCols" :pagination="false" />
                 </div>
                 <!-- <div>
@@ -31,6 +36,7 @@
 
 import { API_BASE_URL } from '../config.js'
 import MarkdownIt from 'markdown-it';
+import CityWeather from '@/components/CityWeather.vue'
 const md = new MarkdownIt({
     html: true,
     linkify: true,
@@ -42,7 +48,9 @@ export default {
     props: {
         id: { type: String, required: true }
     },
-
+    components: {
+        CityWeather,
+    },
     data() {
         return {
             travelPlanRes: "",

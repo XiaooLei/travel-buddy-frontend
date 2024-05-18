@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import SharePage from '@/views/SharePage.vue'; // 确保路径正确，通常需要 .vue 后缀
 import TravelPlan from '@/views/TravelPlan.vue';
 import HomePage from '@/views/HomePage.vue';
+import CityWeather from '@/components/CityWeather.vue';
 
 // 定义路由
 const routes = [
@@ -18,6 +19,10 @@ const routes = [
   {
     path: '/',
     component: HomePage
+  },
+  {
+    path: "/cityWeather",
+    component: CityWeather
   }
   // ... 可以添加更多的路由
 ];

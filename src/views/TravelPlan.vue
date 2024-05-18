@@ -35,18 +35,23 @@
         </div>
         <div class="search-res-container">
             <p style="text-align: left" v-html="renderMarkdown(travelPlanRes)"></p>
+            <div>
+                <div class="grid grid-flow-col overflow-x-auto snap-x snap-mandatory scroll-smooth transition-transform page_weatherScroller__ry586 no-scrollbar relative page_weatherGutter__25Mug">
+                </div>
+            </div>
         </div>
         <div class="right-side-bar">
             <a-space direction="vertical">
                 <div style="padding: 20px;">
-                    <CityWeather/>
+                    <h2>未来7天天气</h2>
+                    <CityWeather />
                 </div>
-                <div>
-                    <h2>必去景点</h2>
+                <h2>必去景点</h2>
+                <div class="overflow-y-auto" style="height: 350px;">
                     <a-table :dataSource="spotsRecommends" :columns="spotsRecommendsCols" :pagination="false" />
                 </div>
-                <div>
-                    <h2>饮食推荐</h2>
+                <h2>饮食推荐</h2>
+                <div class="overflow-y-auto" style="height: 350px;">
                     <a-table :dataSource="foodRecommentds" :columns="foodRecommendsCols" :pagination="false" />
                 </div>
                 <!-- <div>
@@ -75,7 +80,7 @@ const getSpotsRecommends = async (destination, shareKey) => {
     try {
         console.log("enter getSpotsRecommends");
         const response = await fetch(`${API_BASE_URL}/getSpotsRecommends?destination=${destination}&shareKey=${shareKey}`);
-        
+
         if (!response.ok) {
             // throw new Error(`Network error: ${response.status}`);
             console.log("getSpotsRecommends call fail");
@@ -108,22 +113,22 @@ const getFoodRecommends = async (destination, shareKey) => {
 }
 
 const copyText = async (val) => {
-  if (navigator.clipboard && navigator.permissions) {
-    await navigator.clipboard.writeText(val)
-  } else {
-    const textArea = document.createElement('textArea')
-    textArea.value = val
-    textArea.style.width = 0
-    textArea.style.position = 'fixed'
-    textArea.style.left = '-999px'
-    textArea.style.top = '10px'
-    textArea.setAttribute('readonly', 'readonly')
-    document.body.appendChild(textArea)
+    if (navigator.clipboard && navigator.permissions) {
+        await navigator.clipboard.writeText(val)
+    } else {
+        const textArea = document.createElement('textArea')
+        textArea.value = val
+        textArea.style.width = 0
+        textArea.style.position = 'fixed'
+        textArea.style.left = '-999px'
+        textArea.style.top = '10px'
+        textArea.setAttribute('readonly', 'readonly')
+        document.body.appendChild(textArea)
 
-    textArea.select()
-    document.execCommand('copy')
-    document.body.removeChild(textArea)
-  }
+        textArea.select()
+        document.execCommand('copy')
+        document.body.removeChild(textArea)
+    }
 }
 
 
@@ -134,7 +139,7 @@ export default {
     props: {
         msg: String
     },
-    components: { 
+    components: {
         IconShare,
         CityWeather,
     },
@@ -270,19 +275,19 @@ export default {
         },
         // 复制当前页面URL到剪贴板的函数
         async copyCurrentUrlToClipboard() {
-        try {
-            // 获取当前页面的URL
-            const currentUrl = window.location.origin;
-            console.log("currentUrl:", currentUrl)
-            const id = this.shareKey
-            const shareUrl = `${currentUrl}/share/${id}`
-            // 写入剪贴板
-            message.info('已复制到剪切板', 2)
-            await copyText(shareUrl)
-        } catch (err) {
-            // 如果有错误发生，打印错误信息
-            console.error('无法复制当前页面URL到剪贴板', err)
-        }
+            try {
+                // 获取当前页面的URL
+                const currentUrl = window.location.origin;
+                console.log("currentUrl:", currentUrl)
+                const id = this.shareKey
+                const shareUrl = `${currentUrl}/share/${id}`
+                // 写入剪贴板
+                message.info('已复制到剪切板', 2)
+                await copyText(shareUrl)
+            } catch (err) {
+                // 如果有错误发生，打印错误信息
+                console.error('无法复制当前页面URL到剪贴板', err)
+            }
         }
     },
     created() {
@@ -319,22 +324,25 @@ export default {
             line-height: 40px;
             color: #1570ef;
             border-radius: 2%;
-            justify-self: center; /* 水平居中 */
-            align-self: center; /* 垂直居中 */
+            justify-self: center;
+            /* 水平居中 */
+            align-self: center;
+            /* 垂直居中 */
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: space-around;
             padding: 0 20px;
-          }
+        }
     }
-    
+
 }
 
 .wrap {
     display: grid;
     grid-template-columns: 6fr 12fr 7fr;
     min-height: 10px;
+
     .left-side-bar {
         margin-right: 20px;
     }
