@@ -18,18 +18,18 @@
                     <CityWeather />
                 </div>
             </div>
-            <div class="flex justify-center ">
+            <!-- <div class="flex justify-center ">
                 <div class="bg-white w-1/2 rounded-2xl p-3">
                     <h2>必去景点</h2>
                     <div class="overflow-y-auto" style="height: 350px;">
                         <a-table :dataSource="spotsRecommends" :columns="spotsRecommendsCols" :pagination="false" />
                     </div>
                 </div>
-            </div>
+            </div> -->
             <div class="flex justify-center">
                 <div class="relative grid grid-flow-col justify-start overflow-x-auto rounded-xl gap-3" style="width: 700px;">
-                    <div v-for="i in 5" :key="i">
-                        <PoiCard :poiName="'成都111'"/>
+                    <div v-for="poi in pois" :key="poi.name">
+                        <PoiCard :poiName="poi.name" :rating="poi.biz_ext.rating" :photos="poi.photos"/>
                     </div>
                 </div>
             </div>
@@ -76,6 +76,7 @@ export default {
             travelPlanRes: "",
             spotsRecommends: [],
             foodRecommentds: [],
+            pois: [],
             spotsRecommendsCols: [
                 {
                     title: '景点名称',
@@ -128,9 +129,10 @@ export default {
             const response = await fetch(`${API_BASE_URL}/getSharedAnswer?shareKey=${shareKey}`);
             const responseData = await response.json()
             console.log("shareAnswer:", responseData)
-            this.travelPlanRes = responseData.data.travelPlan
-            this.spotsRecommends = responseData.data.spotsRecommends
-            this.foodRecommentds = responseData.data.foodRecommends
+            this.travelPlanRes = responseData.data.sharedAnswer.travelPlan
+            this.spotsRecommends = responseData.data.sharedAnswer.spotsRecommends
+            this.foodRecommentds = responseData.data.sharedAnswer.foodRecommends
+            this.pois = responseData.data.pois
         },
         renderMarkdown(content) {
             const res = md.render(content);

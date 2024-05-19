@@ -25,20 +25,24 @@
         <div style="padding: 20px;">
             <h2>未来15天天气</h2>
             <div class="flex justify-center">
-                <CityWeather />
+                <CityWeather v-if="showWeather" :destination="travelSetting.destination"/>
             </div>
         </div>
-        <div class="flex justify-center ">
+        <!-- <div class="flex justify-center ">
             <div class="bg-white w-1/2 rounded-2xl p-3">
                 <h2>必去景点</h2>
                 <div class="overflow-y-auto" style="height: 350px;">
                     <a-table :dataSource="spotsRecommends" :columns="spotsRecommendsCols" :pagination="false" />
                 </div>
             </div>
+        </div> -->
+        <div class="flex justify-center">
+            <div class="relative grid grid-flow-col justify-start overflow-x-auto rounded-xl gap-3" style="width: 700px;">
+                <div v-for="poi in pois" :key="poi.name">
+                    <PoiCard :poiName="poi.name" :rating="poi.biz_ext.rating" :photos="poi.photos"/>
+                </div>
+            </div>
         </div>
-
-        
-        <PoiCard></PoiCard>
         <div class="flex justify-center ">
             <div class="bg-white w-1/2 rounded-2xl p-3">
                 <h2>饮食推荐</h2>
@@ -68,23 +72,23 @@ const md = new MarkdownIt({
 });
 
 
-const getSpotsRecommends = async (destination, shareKey) => {
-    try {
-        console.log("enter getSpotsRecommends");
-        const response = await fetch(`${API_BASE_URL}/getSpotsRecommends?destination=${destination}&shareKey=${shareKey}`);
+// const getSpotsRecommends = async (destination, shareKey) => {
+//     try {
+//         console.log("enter getSpotsRecommends");
+//         const response = await fetch(`${API_BASE_URL}/getSpotsRecommends?destination=${destination}&shareKey=${shareKey}`);
 
-        if (!response.ok) {
-            // throw new Error(`Network error: ${response.status}`);
-            console.log("getSpotsRecommends call fail");
-            return
-        }
-        const data = await response.json();
-        return data
-    } catch (error) {
-        console.error(
-            "Error fetching article with id ${ id }", error); throw error;
-    }
-}
+//         if (!response.ok) {
+//             // throw new Error(`Network error: ${response.status}`);
+//             console.log("getSpotsRecommends call fail");
+//             return
+//         }
+//         const data = await response.json();
+//         return data
+//     } catch (error) {
+//         console.error(
+//             "Error fetching article with id ${ id }", error); throw error;
+//     }
+// }
 
 
 const getFoodRecommends = async (destination, shareKey) => {
@@ -145,6 +149,8 @@ export default {
                 budget: 0,
                 style: "",
             },
+            showWeather: false,
+            pois: [],
             travelPlanTitle: "",
             travelPlanRes: "",
             printing: false,
@@ -219,6 +225,12 @@ export default {
             this.travelPlanRes = "搜索中..."
             this.printing = false
 
+            this.showWeather = false;
+            this.$nextTick(() => {
+                this.showWeather = true;
+            });
+
+
             const { v4: uuidv4 } = require('uuid');
 
             this.shareKey = uuidv4();
@@ -230,6 +242,8 @@ export default {
                     const data = JSON.parse(event.data)
                     if (data['type'] === 'text') {
                         this.travelPlanRes = this.travelPlanRes + data['text']
+                    } else if (data['type'] === 'poi') {
+                        this.pois.push(data['poi'])
                     }
                 } else {
                     this.printing = true
@@ -248,12 +262,6 @@ export default {
                 sse.close();
             };
 
-            (async () => {
-                const data = await getSpotsRecommends(this.travelSetting.destination, this.shareKey)
-                console.log("spotsRecommends:", data)
-                this.spotsRecommends = data.data
-                this.showEvents = true
-            })();
 
             (async () => {
                 const data = await getFoodRecommends(this.travelSetting.destination, this.shareKey)
@@ -287,6 +295,8 @@ export default {
     created() {
         const planGoal = this.$route.query.planGoal;
         console.log("旅行目标：", planGoal)
+        this.travelSetting.destination = planGoal
+        this.handleSearch()
     }
 }
 </script>

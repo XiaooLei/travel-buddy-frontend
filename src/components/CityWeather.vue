@@ -30,9 +30,14 @@ export default {
   components: {
     WeatherIcon,
   },
+  props: {
+      destination: {
+          type: String,
+          default: '' // 默认天气参数
+      },
+  },
   data() {
     return {
-      destination: "成都",
       type: "sunny", // 多云/晴/雨...
       temprature: "28°C",
       aqi: 0,
@@ -41,6 +46,7 @@ export default {
   },
   methods: {
     async getCityWeather(city) {
+      console.log("weather city:", this.destination)
       const response = await fetch(`${API_BASE_URL}/getWeather?destination=${city}`)
       const responseData = await response.json()
       console.log("responseData:", responseData.data.data)
