@@ -22,10 +22,10 @@
     </div>
     
     <a-space direction="vertical" class="flex flex-col justify-center ">
-        <div style="padding: 20px;">
+        <div v-if="showWeather" style="padding: 20px;">
             <h2>未来15天天气</h2>
             <div class="flex justify-center">
-                <CityWeather v-if="showWeather" :destination="travelSetting.destination"/>
+                <CityWeather :="travelSetting.destination"/>
             </div>
         </div>
         <!-- <div class="flex justify-center ">
@@ -36,7 +36,7 @@
                 </div>
             </div>
         </div> -->
-        <div class="flex justify-center">
+        <div v-if="showWeather" class="flex justify-center">
             <div class="relative grid grid-flow-col justify-start overflow-x-auto rounded-xl gap-3" style="width: 700px;">
                 <div v-for="poi in pois" :key="poi.name">
                     <PoiCard :poiName="poi.name" :rating="poi.biz_ext.rating" :photos="poi.photos"/>
@@ -229,7 +229,7 @@ export default {
             this.$nextTick(() => {
                 this.showWeather = true;
             });
-
+            this.pois = []
 
             const { v4: uuidv4 } = require('uuid');
 

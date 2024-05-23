@@ -1,9 +1,6 @@
 <template>
     <div class="share-page-wrap">
         <div class="flex flex-col search-res-container gap-y-3 mt-5">
-            <div class="text-3xl">
-                <h1>成都-熊猫之旅</h1>
-            </div>
             <div class="flex justify-center">
                 <div class="w-1/2 bg-slate-100 rounded-2xl p-6">
                     <p style="text-align: left" v-html="renderMarkdown(travelPlanRes)"></p>
@@ -12,20 +9,12 @@
         </div>
 
         <a-space direction="vertical" class="flex flex-col justify-center ">
-            <div style="padding: 20px;">
-                <h2>未来15天天气</h2>
+            <div v-if="showWeather" style="padding: 20px;">
+                <h2 class="text-white text-lg">未来15天天气</h2>
                 <div class="flex justify-center">
-                    <CityWeather />
+                    <CityWeather :futureForecast="weather.data.forecast"/>
                 </div>
             </div>
-            <!-- <div class="flex justify-center ">
-                <div class="bg-white w-1/2 rounded-2xl p-3">
-                    <h2>必去景点</h2>
-                    <div class="overflow-y-auto" style="height: 350px;">
-                        <a-table :dataSource="spotsRecommends" :columns="spotsRecommendsCols" :pagination="false" />
-                    </div>
-                </div>
-            </div> -->
             <div class="flex justify-center">
                 <div class="relative grid grid-flow-col justify-start overflow-x-auto rounded-xl gap-3" style="width: 700px;">
                     <div v-for="poi in pois" :key="poi.name">
@@ -121,6 +110,9 @@ export default {
                     key: '推荐指数',
                 }
             ],
+            city: "",
+            weather: {},
+            showWeather: false
         }
     },
 
@@ -133,6 +125,9 @@ export default {
             this.spotsRecommends = responseData.data.sharedAnswer.spotsRecommends
             this.foodRecommentds = responseData.data.sharedAnswer.foodRecommends
             this.pois = responseData.data.pois
+            this.weather = responseData.data.weather
+            this.showWeather = true
+            console.log("weather:",  this.weather)
         },
         renderMarkdown(content) {
             const res = md.render(content);
