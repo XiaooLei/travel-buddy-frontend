@@ -22,12 +22,6 @@
     </div>
     
     <a-space direction="vertical" class="flex flex-col justify-center ">
-        <div v-if="showWeather" style="padding: 20px;">
-            <h2>未来15天天气</h2>
-            <div class="flex justify-center">
-                <CityWeather :="travelSetting.destination"/>
-            </div>
-        </div>
         <!-- <div class="flex justify-center ">
             <div class="bg-white w-1/2 rounded-2xl p-3">
                 <h2>必去景点</h2>
@@ -36,19 +30,25 @@
                 </div>
             </div>
         </div> -->
-        <div v-if="showWeather" class="flex justify-center">
+        <div v-if="showPoiCards" class="flex justify-center">
             <div class="relative grid grid-flow-col justify-start overflow-x-auto rounded-xl gap-3" style="width: 700px;">
                 <div v-for="poi in pois" :key="poi.name">
                     <PoiCard :poiName="poi.name" :rating="poi.biz_ext.rating" :photos="poi.photos"/>
                 </div>
             </div>
         </div>
-        <div class="flex justify-center ">
+        <div v-if="showFoodRecommends" class="flex justify-center ">
             <div class="bg-white w-1/2 rounded-2xl p-3">
                 <h2>饮食推荐</h2>
                 <div class="overflow-y-auto" style="height: 350px;">
                     <a-table :dataSource="foodRecommentds" :columns="foodRecommendsCols" :pagination="false" />
                 </div>
+            </div>
+        </div>
+        <div v-if="showWeather" style="padding: 20px;">
+            <h2>未来15天天气</h2>
+            <div class="flex justify-center">
+                <CityWeather :futureForecast="weather.data.forecast" />
             </div>
         </div>
         <!-- <div>
@@ -104,7 +104,23 @@ const getFoodRecommends = async (destination, shareKey) => {
         return data
     } catch (error) {
         console.error(
-            "Error fetching article with id ${ id }", error); throw error;
+            "Error fetching getFoodRecommends", error); throw error;
+    }
+}
+
+const getWeather = async (destination) => {
+    try {
+        console.log("enter getWeather")
+        const response = await fetch(`${API_BASE_URL}/getWeather?destination=${destination}`);
+        if (!response.ok) {
+            console.log("getWeather call fail");
+            return
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error(
+            "Error fetching getWeather", error); throw error;
     }
 }
 
@@ -150,6 +166,8 @@ export default {
                 style: "",
             },
             showWeather: false,
+            showPoiCards: false,
+            showFoodRecommends: false,
             pois: [],
             travelPlanTitle: "",
             travelPlanRes: "",
@@ -216,6 +234,7 @@ export default {
             ],
             shareKey: 1,
             travelGoal: "",
+            weather: []
         }
     },
     methods: {
@@ -224,11 +243,10 @@ export default {
             // 创建一个 SSE 连接
             this.travelPlanRes = "搜索中..."
             this.printing = false
+            this.showFoodRecommends = false
+            this.showWeather = false
+            this.showPoiCards = false
 
-            this.showWeather = false;
-            this.$nextTick(() => {
-                this.showWeather = true;
-            });
             this.pois = []
 
             const { v4: uuidv4 } = require('uuid');
@@ -243,6 +261,7 @@ export default {
                     if (data['type'] === 'text') {
                         this.travelPlanRes = this.travelPlanRes + data['text']
                     } else if (data['type'] === 'poi') {
+                        this.showPoiCards = true
                         this.pois.push(data['poi'])
                     }
                 } else {
@@ -267,7 +286,14 @@ export default {
                 const data = await getFoodRecommends(this.travelSetting.destination, this.shareKey)
                 console.log("foodRecommends:", data)
                 this.foodRecommentds = data.data
-                this.showEvents = true
+                this.showFoodRecommends = true
+            })();
+            
+            (async () => {
+                const data = await getWeather(this.travelSetting.destination)
+                console.log("weather:", data)
+                this.weather = data.data
+                this.showWeather = true
             })();
         },
 
