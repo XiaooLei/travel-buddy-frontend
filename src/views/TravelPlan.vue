@@ -1,61 +1,85 @@
 <template>
-    <div class="header">
-        <div class="left-blank"></div>
-        <!-- <div> </div> -->
-        <a-input-search v-model:value="travelSetting.destination" placeholder="输入你想去的目的地"
-            @search="handleSearch(destination)" />
-        <div class="right-blank">
-            <button class="share" @click="copyCurrentUrlToClipboard">
-                <IconShare />分享
-            </button>
-        </div>
-    </div>
-    <div class="flex flex-col search-res-container gap-y-3 mt-5">
-        <div class="text-3xl">
-            <h1>{{travelPlanTitle}}</h1>
-        </div>
-        <div class="flex justify-center">
-            <div class="w-1/2 bg-slate-100 rounded-2xl p-6">
-                <p style="text-align: left" v-html="renderMarkdown(travelPlanRes)"></p>
+    <div class="main-page-wrap" :style="backgroundStyle">
+        <div class="header">
+            <div class="left-blank"></div>
+            <!-- <div> </div> -->
+            <a-input-search v-model:value="travelSetting.destination" placeholder="输入你想去的目的地"
+                @search="handleSearch(destination)" />
+            <div class="right-blank">
+                <button class="share" @click="copyCurrentUrlToClipboard">
+                    <IconShare />分享
+                </button>
             </div>
         </div>
-    </div>
-    
-    <a-space direction="vertical" class="flex flex-col justify-center ">
-        <!-- <div class="flex justify-center ">
-            <div class="bg-white w-1/2 rounded-2xl p-3">
-                <h2>必去景点</h2>
-                <div class="overflow-y-auto" style="height: 350px;">
-                    <a-table :dataSource="spotsRecommends" :columns="spotsRecommendsCols" :pagination="false" />
+        <div v-if="showWeather" class="flex flex-col justify-center mt-3 gap-3 text-white">
+            <div class="flex justify-center text-lg gap-3 items-center">
+                <div>{{weather.data.wendu}}°C</div>
+                <WeatherIcon :weather="weather.data.forecast[0].type" />
+                <div>｜</div>
+                <div class="flex justify-center gap-3">
+                    <div class="rounded-lg px-0.5 bg-green-500"
+                    :class="{ 'bg-green-500': weather.data.forecast[0].aqi <= 100, 
+                    'bg-yellow-500': weather.data.forecast[0].aqi > 100 && weather.data.forecast[0].aqi <= 200, 
+                    'bg-red-500': weather.data.forecast[0].aqi > 200 }">
+                    AQI {{weather.data.forecast[0].aqi}}
+                    </div>
+                    {{weather.data.quality}}
                 </div>
             </div>
-        </div> -->
-        <div v-if="showPoiCards" class="flex justify-center">
-            <div class="relative grid grid-flow-col justify-start overflow-x-auto rounded-xl gap-3" style="width: 700px;">
-                <div v-for="poi in pois" :key="poi.name">
-                    <PoiCard :poiName="poi.name" :rating="poi.biz_ext.rating" :photos="poi.photos"/>
-                </div>
-            </div>
-        </div>
-        <div v-if="showFoodRecommends" class="flex justify-center ">
-            <div class="bg-white w-1/2 rounded-2xl p-3">
-                <h2>饮食推荐</h2>
-                <div class="overflow-y-auto" style="height: 350px;">
-                    <a-table :dataSource="foodRecommentds" :columns="foodRecommendsCols" :pagination="false" />
-                </div>
-            </div>
-        </div>
-        <div v-if="showWeather" style="padding: 20px;">
-            <h2>未来15天天气</h2>
             <div class="flex justify-center">
-                <CityWeather :futureForecast="weather.data.forecast" />
+                <div class="text-container text-3xl" style="width: 100px; text-align: justify; padding: 0 10px;">
+                    {{city}}
+                </div>
             </div>
         </div>
-        <!-- <div>
-                酒店推荐
-                <a-table :dataSource="dataSource" :columns="columns" :pagination="false"/>
+
+        <div class="flex flex-col search-res-container gap-y-3 mt-5">
+            <div class="text-3xl">
+                <h1>{{travelPlanTitle}}</h1>
+            </div>
+            <div class="flex justify-center">
+                <div class="w-1/2 bg-slate-100 rounded-2xl p-6">
+                    <p style="text-align: left" v-html="renderMarkdown(travelPlanRes)"></p>
+                </div>
+            </div>
+        </div>
+        
+        <a-space direction="vertical" class="flex flex-col justify-center ">
+            <!-- <div class="flex justify-center ">
+                <div class="bg-white w-1/2 rounded-2xl p-3">
+                    <h2>必去景点</h2>
+                    <div class="overflow-y-auto" style="height: 350px;">
+                        <a-table :dataSource="spotsRecommends" :columns="spotsRecommendsCols" :pagination="false" />
+                    </div>
+                </div>
             </div> -->
-    </a-space>
+            <div v-if="showPoiCards" class="flex justify-center mt-3">
+                <div class="relative grid grid-flow-col justify-start overflow-x-auto rounded-xl gap-3" style="width: 700px;">
+                    <div v-for="poi in pois" :key="poi.name">
+                        <PoiCard :poiName="poi.name" :rating="poi.biz_ext.rating" :photos="poi.photos"/>
+                    </div>
+                </div>
+            </div>
+            <div v-if="showFoodRecommends" class="flex justify-center ">
+                <div class="bg-white w-1/2 rounded-2xl p-3">
+                    <h2>饮食推荐</h2>
+                    <div class="overflow-y-auto" style="height: 350px;">
+                        <a-table :dataSource="foodRecommentds" :columns="foodRecommendsCols" :pagination="false" />
+                    </div>
+                </div>
+            </div>
+            <div v-if="showWeather" style="padding: 20px;">
+                <h2 class="text-white">未来15天天气</h2>
+                <div class="flex justify-center">
+                    <CityWeather :futureForecast="weather.data.forecast" />
+                </div>
+            </div>
+            <!-- <div>
+                    酒店推荐
+                    <a-table :dataSource="dataSource" :columns="columns" :pagination="false"/>
+                </div> -->
+        </a-space>
+    </div>
 </template>
 
 <script>
@@ -65,6 +89,7 @@ import { IconShare } from '@/icons/index'
 import { message } from 'ant-design-vue'
 import CityWeather from '@/components/CityWeather.vue'
 import PoiCard from '@/components/PoiCard.vue';
+import WeatherIcon from '@/components/WeatherIcon.vue';
 const md = new MarkdownIt({
     html: true,
     linkify: true,
@@ -155,6 +180,7 @@ export default {
         IconShare,
         CityWeather,
         PoiCard,
+        WeatherIcon
     },
     data() {
         return {
@@ -165,6 +191,7 @@ export default {
                 budget: 0,
                 style: "",
             },
+            city: "",
             showWeather: false,
             showPoiCards: false,
             showFoodRecommends: false,
@@ -292,7 +319,8 @@ export default {
             (async () => {
                 const data = await getWeather(this.travelSetting.destination)
                 console.log("weather:", data)
-                this.weather = data.data
+                this.weather = data.data.weather
+                this.city = data.data.city
                 this.showWeather = true
             })();
         },
@@ -323,7 +351,39 @@ export default {
         console.log("旅行目标：", planGoal)
         this.travelSetting.destination = planGoal
         this.handleSearch()
-    }
+    },
+    computed: {
+        backgroundStyle() {
+            console.log("pois:", this.pois)
+            console.log("pois length:", this.pois.length, this.pois.length > 0)
+            let url = 'https://images.ixigo.com/node_image/f_auto/imageURL?url=https%3A%2F%2Fplan-cf.ixigo.com%2Fimages%2Fchengdu'
+            let found = false
+            if (this.pois.length > 0) {
+                for (let i = 0; i < this.pois.length; i++) {
+                    for (let j = 0; j < this.pois[i].photos.length; j++) {
+                        if ('url' in this.pois[i].photos[j]) {
+                            url = this.pois[i].photos[j].url
+                            found = true
+                            break
+                        }
+                    }
+                    if (found) {
+                        break
+                    }
+                }
+                console.log("photo:", this.pois[0].photos[0])
+                return {
+                    'background-image': `url('${url}')`,
+                    'background-repeat': 'no-repeat',
+                    'background-size': 'cover',
+                };
+            } else {
+                return {
+                    'background-image': 'https://images.ixigo.com/node_image/f_auto/imageURL?url=https%3A%2F%2Fplan-cf.ixigo.com%2Fimages%2Fchengdu',
+                };
+            }
+        }
+    },
 }
 </script>
 

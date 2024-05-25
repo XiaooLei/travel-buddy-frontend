@@ -10,7 +10,9 @@
         <span class="text-sm">{{ forecast.low.substr(2) }}/{{ forecast.high.substr(2) }} </span>
         <div class="flex justify-center">
           <div class="rounded-lg px-0.5"
-            :class="{ 'bg-green-500': forecast.aqi <= 50, 'bg-yellow-500': forecast.aqi > 50 && forecast.aqi <= 100, 'bg-red-500': forecast.aqi > 100 }">
+            :class="{ 'bg-green-500': forecast.aqi <= 100, 
+            'bg-yellow-500': forecast.aqi > 100 && forecast.aqi <= 200, 
+            'bg-red-500': forecast.aqi > 200 }">
             AQI {{ forecast.aqi }}
           </div>
         </div>

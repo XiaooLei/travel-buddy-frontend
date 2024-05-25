@@ -1,5 +1,27 @@
 <template>
     <div class="share-page-wrap" :style="backgroundStyle">
+        <div v-if="showWeather" class="flex flex-col justify-center mt-3 gap-3 text-white">
+            <div class="flex justify-center text-lg gap-3 items-center">
+                <div>{{weather.data.wendu}}°C</div>
+                <WeatherIcon :weather="weather.data.forecast[0].type" />
+                <div>｜</div>
+                <div class="flex justify-center gap-3">
+                    <div class="rounded-lg px-0.5 bg-green-500"
+                    :class="{ 'bg-green-500': weather.data.forecast[0].aqi <= 100, 
+                    'bg-yellow-500': weather.data.forecast[0].aqi > 100 && weather.data.forecast[0].aqi <= 200, 
+                    'bg-red-500': weather.data.forecast[0].aqi > 200 }">
+                      AQI {{weather.data.forecast[0].aqi}}
+                    </div>
+                    {{weather.data.quality}}
+                  </div>
+            </div>
+            <div class="flex justify-center">
+                <div class="text-container text-3xl" style="width: 100px; text-align: justify; padding: 0 10px;">
+                    {{city}}
+                </div>
+            </div>
+        </div>
+
         <div class="flex flex-col search-res-container gap-y-3 mt-5 mb-5">
             <div class="flex justify-center">
                 <div class="w-1/2 bg-slate-100 rounded-2xl p-6">
@@ -48,6 +70,7 @@ import { API_BASE_URL } from '../config.js'
 import MarkdownIt from 'markdown-it';
 import CityWeather from '@/components/CityWeather.vue'
 import PoiCard from '@/components/PoiCard.vue';
+import WeatherIcon from '@/components/WeatherIcon.vue';
 const md = new MarkdownIt({
     html: true,
     linkify: true,
@@ -62,9 +85,11 @@ export default {
     components: {
         CityWeather,
         PoiCard,
+        WeatherIcon,
     },
     data() {
         return {
+            city: "",
             travelPlanRes: "",
             spotsRecommends: [],
             foodRecommentds: [],
@@ -113,7 +138,6 @@ export default {
                     key: '推荐指数',
                 }
             ],
-            city: "",
             weather: {},
             showWeather: false
         }
@@ -129,6 +153,7 @@ export default {
             this.foodRecommentds = responseData.data.sharedAnswer.foodRecommends
             this.pois = responseData.data.pois
             this.weather = responseData.data.weather
+            this.city = responseData.data.city
             this.showWeather = true
             console.log("weather:", this.weather)
             console.log("pois_2:", this.pois)
