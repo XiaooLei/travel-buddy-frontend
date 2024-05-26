@@ -171,6 +171,8 @@ export default {
             if (this.pois.length > 0) {
                 console.log("photo:", this.pois[0].photos[0])
                 return {
+                    'background-repeat': 'no-repeat',
+                    'background-size': 'cover',
                     'background-image': `url('${this.pois[0].photos[0].url}')`,
                 };
             } else {
