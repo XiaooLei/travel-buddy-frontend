@@ -356,13 +356,13 @@ export default {
         backgroundStyle() {
             console.log("pois:", this.pois)
             console.log("pois length:", this.pois.length, this.pois.length > 0)
-            let url = 'https://images.ixigo.com/node_image/f_auto/imageURL?url=https%3A%2F%2Fplan-cf.ixigo.com%2Fimages%2Fchengdu'
+            let imgUrl = 'https://images.ixigo.com/node_image/f_auto/imageURL?url=https%3A%2F%2Fplan-cf.ixigo.com%2Fimages%2Fchengdu'
             let found = false
             if (this.pois.length > 0) {
                 for (let i = 0; i < this.pois.length; i++) {
                     for (let j = 0; j < this.pois[i].photos.length; j++) {
                         if ('url' in this.pois[i].photos[j]) {
-                            url = this.pois[i].photos[j].url
+                            imgUrl = this.pois[i].photos[j].url
                             found = true
                             break
                         }
@@ -373,7 +373,7 @@ export default {
                 }
                 console.log("photo:", this.pois[0].photos[0])
                 return {
-                    'background-image': `url('${url}')`,
+                    'background-image': `url('${imgUrl}')`,
                     'background-repeat': 'no-repeat',
                     'background-size': 'cover',
                 };
