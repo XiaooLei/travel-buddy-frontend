@@ -9,7 +9,7 @@
             </div>
         </div>
     </div>
-    <a-drawer v-model:visible="detailVisible" class="custom-class">
+    <a-drawer v-model:visible="detailVisible" class="custom-class" style="padding: 0%;">
         <a-carousel arrows :autoplay="true">
             <template #prevArrow>
                 <div class="custom-slick-arrow" style="left: 10px; z-index: 1">
@@ -26,11 +26,11 @@
             </div>
         </a-carousel>
         <div class="flex flex-col justify-center">
-            <div class="flex justify-center">
-                <div>{{ poiName }}</div>
+            <div class="flex justify-center gap-10">
+                <div class="text-lg p-3">{{ poiName }}</div>
             </div>
-            <div class="flex justify-center">
-                <div class="flex justify-center align-center bg-green-300 w-16 h-8 p-1.5 gap-1 rounded-md	">
+            <div class="flex justify-center pb-3">
+                <div class="flex justify-center align-center bg-green-300 w-16 h-8 p-1.5 gap-1 rounded-md">
                     <svg color="rgb(35, 140, 70)" width="1em" height="1em" font-size="1.5rem" fill="currentColor"
                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" data-testid="StarFilledIcon"
                         class="text-success-500 text-lg" style="user-select: none; display: inline-block;">
@@ -126,6 +126,7 @@ export default {
     data() {
         return {
             detailVisible: false,
+            customClass: 'my-custom-drawer'
         }
     },
     computed: {
@@ -180,4 +181,20 @@ export default {
 .ant-carousel :deep(.slick-slide h3) {
     color: #fff;
 }
+
+.ant-drawer-body {
+    flex-grow: 1;
+    padding-left:  0px !important;;
+    padding-right: 0px !important;;
+    overflow: auto;
+    font-size: 14px;
+    line-height: 1.5715;
+    word-wrap: break-word;
+}
+
+.my-custom-drawer .ant-drawer-body {
+    padding: 0;
+}
+
+
 </style>
