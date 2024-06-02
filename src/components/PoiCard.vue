@@ -55,8 +55,13 @@
                 <phone-outlined />
                 <p>{{telephone}}</p>
             </div>
+            <div class="flex items-center gap-2">
+                <div v-if="typeof price === 'string'">
+                    <p >¥  {{price}} / 人</p>
+                </div>
+            </div>
         </div>
-        <map-container :x="cordX" :y="cordY" :location="poiName"></map-container>
+        <map-container v-if="detailVisible" :x="cordX" :y="cordY" :location="poiName"></map-container>
     </a-drawer>
 </template>
 
@@ -105,6 +110,10 @@ export default {
             type: String,
             default: "xxxx"
         },
+        price: {
+            type: String,
+            default: "xxx"
+        },
         cordX: {
             type: Number,
             default: 116.397428
@@ -132,6 +141,7 @@ export default {
     methods: {
     },
     mounted() {
+        console.log("price:", this.price)
     }
 }
 

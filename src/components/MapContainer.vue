@@ -20,7 +20,7 @@ export default {
   components: {
   },
   mounted() {
-
+    console.log("map created")
     window._AMapSecurityConfig = {
       securityJsCode: "56b9708e75d5e27739c4b10a5b6d24aa",
     };
@@ -57,6 +57,7 @@ export default {
   },
   unmouted() {
     map?.destroy();
+    console.log("map destroy")
   }
 
 }
