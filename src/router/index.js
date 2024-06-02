@@ -4,6 +4,7 @@ import TravelPlan from '@/views/TravelPlan.vue';
 import HomePage from '@/views/HomePage.vue';
 import CityWeather from '@/components/CityWeather.vue';
 import PoiCard from '@/components/PoiCard.vue';
+import MapContainer from '@/components/MapContainer.vue';
 
 // 定义路由
 const routes = [
@@ -28,6 +29,10 @@ const routes = [
   {
     path: "/poiCard",
     component: PoiCard
+  },
+  {
+    path: '/MapContainer',
+    component: MapContainer
   }
   // ... 可以添加更多的路由
 ];

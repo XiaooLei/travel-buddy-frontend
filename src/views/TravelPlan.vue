@@ -56,7 +56,8 @@
             <div v-if="showPoiCards" class="flex justify-center mt-3">
                 <div class="relative grid grid-flow-col justify-start overflow-x-auto rounded-xl gap-3" style="width: 700px;">
                     <div v-for="poi in pois" :key="poi.name">
-                        <PoiCard :poiName="poi.name" :rating="poi.biz_ext.rating" :photos="poi.photos"/>
+                        <PoiCard :poiName="poi.name" :rating="poi.biz_ext.rating" :photos="poi.photos" 
+                        :cordX="poi.cord_x" :cordY="poi.cord_y" :address="poi.address" :telephone="poi.tel"/>
                     </div>
                 </div>
             </div>
