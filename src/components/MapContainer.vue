@@ -64,7 +64,7 @@ export default {
 </script>
 
 <template>
-  <div id="container"></div>
+  <div id="container" class="rounded-md"></div>
 </template>
 
 <style scoped>

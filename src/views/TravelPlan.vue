@@ -1,5 +1,5 @@
 <template>
-    <div class="main-page-wrap" :style="backgroundStyle">
+    <div class="main-page-wrap" :style="backgroundStyle" style="min-height: 1200px;">
         <div class="header">
             <div class="left-blank text-2xl">
                 旅伴AI
@@ -83,6 +83,8 @@
                     <a-table :dataSource="dataSource" :columns="columns" :pagination="false"/>
                 </div> -->
         </a-space>
+        <div style="height: 40px;">
+        </div>
     </div>
 </template>
 
@@ -438,24 +440,5 @@ export default {
         }
     }
 
-}
-
-.travel-plan-wrap {
-    display: grid;
-    grid-template-columns: 6fr 12fr 7fr;
-    min-height: 10px;
-
-    .left-side-bar {
-        margin-right: 20px;
-    }
-
-    .right-side-bar {
-        background-color: white;
-    }
-
-    .search-res-container {
-        min-height: 100%;
-        padding: 10px;
-    }
 }
 </style>

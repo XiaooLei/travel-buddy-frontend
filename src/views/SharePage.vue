@@ -36,7 +36,7 @@
                     style="width: 800px;">
                     <div v-for="poi in pois" :key="poi.name">
                         <div @click="visible=!visible">
-                            <PoiCard :poiName="poi.name" :rating="poi.biz_ext.rating" :photos="poi.photos" 
+                            <PoiCard :poiName="poi.name" :rating="typeof poi.biz_ext.rating === 'string' ? poi.biz_ext.rating : '4.7'" :photos="poi.photos" 
                             :cordX="poi.cord_x" :cordY="poi.cord_y" :address="poi.address" :telephone="poi.tel"
                             :price="poi.biz_ext.cost"/>
                         </div>

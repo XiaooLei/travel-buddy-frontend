@@ -9,8 +9,9 @@
             </div>
         </div>
     </div>
+    
     <a-drawer v-model:visible="detailVisible" class="custom-class" style="padding: 0%;">
-        <a-carousel arrows :autoplay="true">
+        <a-carousel arrows :autoplay="true" class="rounded-md">
             <template #prevArrow>
                 <div class="custom-slick-arrow" style="left: 10px; z-index: 1">
                     <left-circle-outlined />
@@ -41,7 +42,7 @@
                     <p>{{ rating }}</p>
                 </div>
             </div>
-            <div>
+            <div v-if="typeof address === 'string'">
                 <svg width="1em" height="1em" font-size="1.5rem" fill="currentColor" viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg" data-testid="LocationOnIcon" class="flex items-center"
                     style="user-select: none; display: inline-block;">
@@ -51,7 +52,7 @@
                 </svg>
                {{address}}
             </div>
-            <div class="flex items-center gap-2">
+            <div v-if="typeof telephone === 'string'" class="flex items-center gap-2">
                 <phone-outlined />
                 <p>{{telephone}}</p>
             </div>
