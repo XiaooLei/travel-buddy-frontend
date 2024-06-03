@@ -1,7 +1,9 @@
 <template>
     <div class="main-page-wrap" :style="backgroundStyle">
         <div class="header">
-            <div class="left-blank"></div>
+            <div class="left-blank text-2xl">
+                旅伴AI
+            </div>
             <!-- <div> </div> -->
             <a-input-search v-model:value="travelSetting.destination" placeholder="输入你想去的目的地"
                 @search="handleSearch(destination)" />
@@ -320,10 +322,15 @@ export default {
             
             (async () => {
                 const data = await getWeather(this.travelSetting.destination)
-                console.log("weather:", data)
-                this.weather = data.data.weather
-                this.city = data.data.city
-                this.showWeather = true
+                if (data.msg == "succ") {
+                    console.log("weather:", data)
+                    this.weather = data.data.weather
+                    this.city = data.data.city
+                    this.showWeather = true
+                } else if (data.msg === "city_not_found") {
+                    this.city = ""
+                    this.showWeather = false
+                }
             })();
         },
 
@@ -400,6 +407,9 @@ export default {
     border-bottom: solid 1px #f2f4f7;
     display: grid;
     grid-template-columns: 1fr 3fr 1fr;
+    margin-top: 20px;
+    box-shadow: 0 8px 8px rgba(0, 0, 0, 0.2);
+
 
     .search {
         padding-top: 40px;
