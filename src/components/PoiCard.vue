@@ -155,8 +155,8 @@ export default {
 /* For demo */
 .ant-carousel :deep(.slick-slide) {
     text-align: center;
-    height: 160px;
-    line-height: 160px;
+    height: auto;
+    line-height: auto;
     background: #364d79;
     overflow: hidden;
 }
@@ -193,7 +193,7 @@ export default {
     word-wrap: break-word;
 }
 
-.my-custom-drawer .ant-drawer-body {
+.my-custom-drawer :deep(.ant-drawer-body) {
     padding: 0;
 }
 
